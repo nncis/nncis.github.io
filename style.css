@@ -1,0 +1,32 @@
+html, body {
+    min-height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+svg{
+    background-color: white;
+}
+
+svg {
+    min-width: 1000px;
+    min-height: 600px;
+}
+
+#tooltip p{
+    font-size: 12px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin: 2px;
+
+}
+
+.county:hover {
+    stroke: black;
+    stroke-width: 1.5;
+ }
