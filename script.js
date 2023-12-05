@@ -1,120 +1,206 @@
-const urlEducationData = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json";
-const urlCountryData = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json"
+const urlList = {
+    education: "https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/for_user_education.json",
+    map: "https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json"
+};
 
-let countyData
-let educationData
-let bachelorsPercentage = []
-let colorScale
+let eduData = [];
+let mapData = [];
 
-const width = 1200;
-const height = 600;
-const padding = 30;
+let readyCount = 0;
 
-const COLORS = {
-    blue: ["#a9d9ff", "#002749"]
-}
+document.addEventListener("DOMContentLoaded", () => {
+    for (const property in urlList) {
+        let request = new XMLHttpRequest();
+        request.open("GET", urlList[property], true);
+        request.send();
 
-let svg = d3.select("#canvas")
+        request.onload = () => {
+            if (property == "education") {
+                eduData = JSON.parse(request.responseText);
+                readyCount += 1;
+            }
+            else if (property == "map") {
+                mapData = JSON.parse(request.responseText);
+                readyCount += 1;
+            }
 
-const generateScales = () => {
+            if (readyCount === Object.keys(urlList).length) {
+                buildChart();
+            };
+        };
+    };
 
-    colorScale = d3.scaleLinear()
-        .domain([d3.min(bachelorsPercentage), d3.max(bachelorsPercentage)])
-        .range(COLORS.blue)
+    const buildChart = () => {
 
-    xAxisScale = d3.scaleLinear()
-        .domain([d3.min(bachelorsPercentage), d3.max(bachelorsPercentage)])    
-        .range([0, 270])
-}
+        const paddingTop = 40;
+        const paddingLeft = 20;
+        const paddingRight = 60;
+        const paddingBottom = 20;
 
-const drawMap = () => {
+        const w = 1000 + paddingLeft + paddingRight;
+        const h = 600 + paddingTop + paddingBottom;
 
-    let tooltip = d3.select("body")
-        .append("div")
-        .attr("id", "tooltip")
-        .style("visibility", "hidden")
-        .style("background-color", "#fdff9c")
-        .style("border", "solid")
-        .style("border-width", "1px")
-        .style("border-radius", "5px")
-        .style("width", "auto")
-        .style("height", "auto")
-        .style("opacity", "0.8")
-        .style("color", "black")
-        .style("position", "absolute")
-        .style("text-align", "center")
+        const legendRectCount = 10;
+        const legendRectH = (h - paddingTop - paddingBottom) / legendRectCount;
+        const legendRectW = 10;
+        const legendSpacing = 55;
 
-    svg.selectAll("path")
-        .data(countyData)
+
+        const minColor = "#dae6f2";
+        const pivotColor = "#6db4f2";
+        const maxColor = "#0081f2";
+        const stateBorderColor = "orange";
+
+        const svg = d3
+            .select("#container")
+            .append("svg")
+            .attr("id", "chart")
+            .attr("width", w)
+            .attr("height", h)
+            ;
+
+        svg
+            .append("text")
+            .text("Higher Education Rates by US county")
+            .attr("id", "title")
+            .attr("transform", `translate(${w / 2}, ${paddingTop})`)
+            .attr("text-anchor", "middle")
+            ;
+
+        const eduMin = d3.min(eduData, d => d.bachelorsOrHigher);
+        const eduMean = d3.mean(eduData, d => d.bachelorsOrHigher);
+        const eduMax = d3.max(eduData, d => d.bachelorsOrHigher);
+
+        const colorScale = d3
+            .scaleLinear()
+            .domain([eduMin, eduMean, eduMax])
+            .range([minColor, pivotColor, maxColor])
+            ;
+
+        let recentEduData = [eduData[0]];
+
+        const fetchEduData = (d, keyName) => {
+            if (recentEduData[0].fips != d.id) {
+                recentEduData = eduData.filter((val) => val.fips == d.id);
+            }
+            return recentEduData[0][keyName];
+        };
+
+
+        const toolTipBox = d3.select("#container")
+            .append("div")
+            .attr("id", "tooltip")
+            ;
+
+        const toolTipContent = (d) => {
+
+            let currentCounty = eduData.filter((val) => val.fips == d.id)[0];
+
+            let area_name = currentCounty.area_name;
+            let state = currentCounty.state;
+            let fips = d.id;
+            let eduLevel = currentCounty.bachelorsOrHigher;
+
+            return area_name + ", " + state + "<br>" + eduLevel + "%";
+        };
+
+        const legend = svg
+            .append("g")
+            .attr("id", "legend")
+            .attr("transform", `translate(${(w - paddingLeft - paddingRight)}, ${(h - paddingBottom)})`)
+            ;
+
+
+        const legendData = function () {
+
+            let arr = [eduMin]
+            let stepSize = (eduMax - eduMean) / legendRectCount;
+
+            for (i = 1; i <= legendRectCount - 1; i++) {
+                arr.push(parseFloat((i * stepSize + eduMin).toFixed(1)))
+            };
+            arr.push(eduMax);
+            return arr;
+        };
+
+        legend.selectAll("rect")
+            .data(legendData().slice(0, -1)) 
+            .enter()
+            .append("rect")
+            .attr("id", "legend-rect")
+            .attr("y", (d, i) => i * (-legendRectH) - legendRectH) 
+            .attr("width", legendRectW)
+            .attr("height", legendRectH)
+            .attr("fill", (d) => colorScale(d)) 
+            .attr("stroke", "white") 
+            ;
+
+        legend
+            .append("g")
+            .attr("id", "legend-axis")
+            .selectAll("text")
+            .data(legendData())
+            .enter()
+            .append("text")
+            .attr("id", "legend-label")
+            .text((d) => d + "%")
+            .attr("y", (d, i) => i * (-legendRectH)) 
+            .attr("transform", "translate(" + legendSpacing + ", 0)") 
+            ;
+
+        const geoPathMaker = d3.geoPath()
+            ;
+
+        const counties = svg
+            .append("g")
+            .attr("id", "counties")
+            .attr("transform", "translate(" + paddingLeft + ", " + paddingTop + ")") 
+            ;
+
+            const states = svg
+			.append("g")
+			.attr("id", "states")
+			.attr("transform", "translate(" + paddingLeft + ", " + paddingTop + ")" ) 
+		;
+
+        counties
+			.selectAll("path")
+			.data( topojson.feature(mapData, mapData.objects.counties).features ) 
+			.enter()
+				.append("path") 
+				.attr("class", "county") 
+				.attr("d", geoPathMaker ) 
+				.attr("data-fips", (d) => d.id ) 
+				.attr("data-education", (d) => fetchEduData(d, "bachelorsOrHigher") )
+				.attr("fill", (d) => colorScale( fetchEduData(d, "bachelorsOrHigher") ))
+				.on("mouseover", (d, i) => {
+					toolTipBox
+						.style("top", d3.event.pageY + 10 + "px" ) 
+						.style("left", d3.event.pageX + 10 + "px" )
+						.attr("data-education", fetchEduData(d, "bachelorsOrHigher")) 
+						//.style("background", colorScale(fetchEduData(d, "bachelorsOrHigher")) ) 
+						.style("visibility", "visible") 
+						.html( toolTipContent(d) ) 
+					;
+				})
+				.on("mouseout", (d, i) => {
+					toolTipBox					
+						.style("visibility", "hidden")
+					;
+				})
+		;
+
+        states
+        .selectAll("path")
+        .data( topojson.feature(mapData, mapData.objects.states).features )
         .enter()
-        .append("path")
-        .attr("class", "county")
-        .attr("d", d3.geoPath())
-        .attr("fill", d => {
-            let id = d.id
-            let county = educationData.find(item => item.fips === id)
-            return colorScale(county.bachelorsOrHigher)
-        })
-        .attr("data-fips", d => d.id)
-        .attr("data-education", d => {
-            let id = d.id
-            let county = educationData.find(item => item.fips === id)
-            return county.bachelorsOrHigher
-        })
-        .on("mouseover", d => {           
-            let id = d.id
-            let county = educationData.find(item => item.fips === id)
-
-            tooltip.style("visibility", "visible")
-                .html("<p>"+ county.area_name + ", " + county.state + ": "+ county.bachelorsOrHigher + "%" +"</p>")
-                .attr("stroke","black")
-                .attr("data-education", county.bachelorsOrHigher)
-        })
-        .on("mousemove", function () { return tooltip.style("top", (event.pageY - 20) + "px").style("left", (event.pageX + 15) + "px"); })
-        .on("mouseout", function () { return tooltip.style("visibility", "hidden"); });
-}
+            .append("path")
+            .attr("class", "state")
+            .attr("d", geoPathMaker)
+            .attr("fill", "none") 
+            .attr("stroke", "white") 
+    ;
+    }; // END of buildChart() function
+}); // END of DOMContentLoaded event listener
 
 
-
-
-const legend = () => {
-
-
-    svg.append("g")
-        .attr("id", "legend")
-        .append("rect")
-        .attr("transform","translate(" + (width / 2) + "," + (padding * 2) + ")")
-
-
-        let xAxis = d3.axisBottom(xAxisScale)
-
-        svg.append("g")
-        .call(xAxis)
-        .attr("id", "y-axis")
-        .attr("transform","translate(" + (width / 2) + "," + (padding * 2) + ")")
-}
-
-d3.json(urlCountryData).then(
-    (data, error) => {
-        if (error) {
-            console.log("error");
-        } else {
-            countyData = topojson.feature(data, data.objects.counties).features
-            console.log(countyData);
-            d3.json(urlEducationData).then(
-                (data, error) => {
-                    if (error) {
-                        console.log("error");
-                    } else {
-                        educationData = data
-                        console.log(educationData);
-                        data.map(item => bachelorsPercentage.push(item.bachelorsOrHigher))
-                        generateScales()
-                        drawMap()
-                        legend()
-                    }
-                }
-            )
-        }
-    }
-)
