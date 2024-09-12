@@ -1,0 +1,27 @@
+.desktop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 98vw;
+    height: 96vh;
+    border: 3px solid black;
+    border-radius: 10px;
+    background-color: var(--lightCyan);
+    position: relative;
+    overflow: hidden;
+}
+
+.icons-area {
+    /* display: grid;
+    grid-template-columns: repeat(3, 1fr) ;
+    grid-template-rows: repeat(6, 1fr); */
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: center;
+    
+    align-items: center;
+    width: 20%;
+    height: 50%;
+    position: relative;
+}
