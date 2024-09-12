@@ -16,9 +16,9 @@ const Desktop = () => {
 	]);
 
 	const [icons, setIcons] = useState([
-		{ id: "project-icon", title: "My Projects", img: TbDevicesPc, position: {x: 20, y: 20}},
-		{ id: "about-icon", title: "About me", img: GrDocumentText, position: { x: 100, y: 100 }},
-		{ id: "contact-icon", title: "Contact me", img: IoMdPerson, position: { x: 200, y: 0 }},
+		{ id: "project-icon", title: "My Projects", img: TbDevicesPc, position: {initialX: 20, initialY: 20}},
+		{ id: "about-icon", title: "About me", img: GrDocumentText, position: {initialX: 20, initialY: 20}},
+		{ id: "contact-icon", title: "Contact me", img: IoMdPerson, position: {initialX: 20, initialY: 20}},
 	]);
 
 
@@ -61,6 +61,8 @@ const Desktop = () => {
 						IconImg={icon.img}
 						openWindow={openWindow}
 						bringWindowToFront={bringWindowToFront}
+						initialX={icon.initialX}
+						initialY={icon.initialY}
 					/>
 				))}
 			</div>
