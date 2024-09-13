@@ -5,9 +5,10 @@
     justify-content: center;
     overflow: hidden;
     padding-top: 0.5rem;
-    border: 1px solid black;
+   
     width: 10rem;
     height: 7rem;
+    position: absolute;
 }
 
 .icon-container h5 {
@@ -17,5 +18,5 @@
 
 .icon-container:active {
     background-color: rgba(56, 161, 144, 0.247);
-    border: 1px solid black;
+    border: 1px solid rgba(0, 0, 0, 0.288);
 }

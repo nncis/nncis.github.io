@@ -16,9 +16,9 @@ const Desktop = () => {
 	]);
 
 	const [icons, setIcons] = useState([
-		{ id: "project-icon", title: "My Projects", img: TbDevicesPc, position: {initialX: 20, initialY: 20}},
-		{ id: "about-icon", title: "About me", img: GrDocumentText, position: {initialX: 20, initialY: 20}},
-		{ id: "contact-icon", title: "Contact me", img: IoMdPerson, position: {initialX: 20, initialY: 20}},
+		{ id: "project-icon", title: "My Projects", img: TbDevicesPc, position: { x: 100, y: 100 } },
+		{ id: "about-icon", title: "About me", img: GrDocumentText, position: { x: 100, y: 150 } },
+		{ id: "contact-icon", title: "Contact me", img: IoMdPerson, position: { x: 100, y: 200 } },
 	]);
 
 
@@ -35,13 +35,44 @@ const Desktop = () => {
 		const idModified = id.replace("-icon", "-window");
 		setWindows((prevWindows) =>
 			prevWindows.map(win =>
-				win.id === idModified ? { ...win, display: !win.display } : win
+				win.id === idModified ? { ...win, display: true } : win
 			)
 		)
 	}
 
+	const closeWindow = (id) => {
+		setWindows((prevWindows) =>
+			prevWindows.map(win =>
+				win.id === id ? { ...win, display: false } : win
+			)
+		)
+	}
+
+	const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const data = event.dataTransfer.getData('text/plain')
+    const x = event.clientX 
+    const y = event.clientY 
+
+    setIcons((prevIcons) =>
+      prevIcons.map((icon) =>
+        icon.id === data
+          ? { ...icon, position: {x: x - 45, y: y - 37}} 
+          : icon
+      )
+    );
+  };
+
 	return (
-		<div className="desktop">
+		<div 
+		className="desktop" 
+		onDragOver={handleDragOver}
+		onDrop={handleDrop}
+		>
 			{windows.map((win) => (
 				<Window
 					key={win.id}
@@ -49,23 +80,17 @@ const Desktop = () => {
 					title={win.title}
 					bringWindowToFront={bringWindowToFront}
 					display={win.display}
-					openWindow={openWindow}
+					closeWindow={closeWindow}
 				/>
 			))}
-			<div className='icons-area'>
 				{icons.map((icon) => (
 					<Icon
-						key={icon.id}
-						id={icon.id}
-						title={icon.title}
+						icon={icon}
 						IconImg={icon.img}
 						openWindow={openWindow}
 						bringWindowToFront={bringWindowToFront}
-						initialX={icon.initialX}
-						initialY={icon.initialY}
 					/>
 				))}
-			</div>
 		</div>
 	)
 }

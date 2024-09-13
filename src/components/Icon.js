@@ -1,17 +1,13 @@
 import '../styles/Icon.css'
-import Draggable from 'react-draggable';
-import { useState } from 'react';
 
-const Icon = ({ id, title, IconImg, openWindow, bringWindowToFront, initialY, initialX }) => {
-
-	const [position, setPostition] = useState({ x: initialX , y: initialY });
+const Icon = ({ icon, IconImg, openWindow, bringWindowToFront }) => {
 
 	const setBringWindowToFront = () => {
-		bringWindowToFront(id)
+		bringWindowToFront(icon.id)
 	};
 
 	const setOpenWindow = () => {
-		openWindow(id)
+		openWindow(icon.id)
 	};
 
 	const handleMultipleFunction = () => {
@@ -19,21 +15,22 @@ const Icon = ({ id, title, IconImg, openWindow, bringWindowToFront, initialY, in
 		setBringWindowToFront();
 	};
 
-	const handleDrag = (e, data, id) => {
-		
+	const handleDragStart = (event) => {
+		event.dataTransfer.setData('text/plain', event.target.id);
 	};
 
-return (
-<Draggable key={id} bounds="parent" onDrag={(e, data) => handleDrag(e, data, id)}>
-	<div 
-		id={id}
-		className='icon-container'
-		onClick={handleMultipleFunction}
-		>
-		<IconImg size={30}/>
-		<h5>{title}</h5>
-	</div>
-</Draggable>	
+	return (
+			<div
+				id={icon.id}
+				style={{top: `${icon.position.y}px`, left: `${icon.position.x}px` }}
+				onClick={handleMultipleFunction}
+				className='icon-container'
+				onDragStart={handleDragStart}
+				draggable
+			>
+				<IconImg size={30} />
+				<h5>{icon.title}</h5>
+			</div>
 	)
 }
 

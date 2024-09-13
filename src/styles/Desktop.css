@@ -11,17 +11,3 @@
     overflow: hidden;
 }
 
-.icons-area {
-    /* display: grid;
-    grid-template-columns: repeat(3, 1fr) ;
-    grid-template-rows: repeat(6, 1fr); */
-
-    display: flex;
-    flex-wrap: wrap;
-    justify-items: center;
-    
-    align-items: center;
-    width: 20%;
-    height: 50%;
-    position: relative;
-}
