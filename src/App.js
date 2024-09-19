@@ -1,11 +1,14 @@
-import './App.css';
+import './index.css'
 import Desktop from './components/Desktop';
+import { Route, Routes } from "react-router-dom"
 
 function App() {
   return (
-    <div className="App">
-      <Desktop />
-    </div>
+    <>
+      <Routes>
+       <Route path="/" element={<Desktop />} />
+      </Routes>
+    </>
   );
 }
 
