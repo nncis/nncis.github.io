@@ -3,22 +3,26 @@ import Window from "./Window"
 import Icon from './Icon';
 import { useState } from "react";
 
-import { TbDevicesPc } from "react-icons/tb";
-import { GrDocumentText } from "react-icons/gr";
-import { IoMdPerson } from "react-icons/io";
+import ProjectsContent from './ProjectsContent';
+import AboutContent from './AboutContent';
+import ContactContent from './ContactContent';
+
+import floppy from '../assets/floppy-disk.png'
+import contact from '../assets/chat.png'
+import about from '../assets/contact.png'
 
 const Desktop = () => {
 
 	const [windows, setWindows] = useState([
-		{ id: "project-window", title: "My Projects", display: false },
-		{ id: "about-window", title: "About me", display: false },
-		{ id: "contact-window", title: "Contact Me", display: false },
+		{ id: "project-window", title: "Projects", display: false, content: ProjectsContent },
+		{ id: "about-window", title: "About", display: false, content: AboutContent },
+		{ id: "contact-window", title: "Contact", display: false, content: ContactContent },
 	]);
 
 	const [icons, setIcons] = useState([
-		{ id: "project-icon", title: "My Projects", img: TbDevicesPc, position: { x: 100, y: 100 } },
-		{ id: "about-icon", title: "About me", img: GrDocumentText, position: { x: 100, y: 150 } },
-		{ id: "contact-icon", title: "Contact me", img: IoMdPerson, position: { x: 100, y: 200 } },
+		{ id: "project-icon", title: "Projects", position: { x: 50, y: 100 }, iconImg: floppy},
+		{ id: "about-icon", title: "About", position: { x: 50, y: 200 }, iconImg: about},
+		{ id: "contact-icon", title: "Contact", position: { x: 50, y: 300 }, iconImg: contact},
 	]);
 
 
@@ -81,12 +85,14 @@ const Desktop = () => {
 					bringWindowToFront={bringWindowToFront}
 					display={win.display}
 					closeWindow={closeWindow}
+					Content={win.content}
 				/>
 			))}
 				{icons.map((icon) => (
 					<Icon
+						key={icon.id}
 						icon={icon}
-						IconImg={icon.img}
+						iconImg={icon.iconImg}
 						openWindow={openWindow}
 						bringWindowToFront={bringWindowToFront}
 					/>

@@ -1,6 +1,6 @@
 import '../styles/Icon.css'
 
-const Icon = ({ icon, IconImg, openWindow, bringWindowToFront }) => {
+const Icon = ({ icon, openWindow, bringWindowToFront, iconImg }) => {
 
 	const setBringWindowToFront = () => {
 		bringWindowToFront(icon.id)
@@ -28,7 +28,7 @@ const Icon = ({ icon, IconImg, openWindow, bringWindowToFront }) => {
 				onDragStart={handleDragStart}
 				draggable
 			>
-				<IconImg size={30} />
+				<img src={iconImg} alt="Descripción de la imagen"></img>
 				<h5>{icon.title}</h5>
 			</div>
 	)

@@ -6,7 +6,7 @@
     height: 96vh;
     border: 3px solid black;
     border-radius: 10px;
-    background-color: var(--lightCyan);
+    background-color: var(--indigo);
     position: relative;
     overflow: hidden;
 }
