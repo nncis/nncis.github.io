@@ -1,7 +1,11 @@
 import '../styles/Desktop.css'
 import Window from "./Window"
 import Icon from './Icon';
+import Header from './Header';
+import NavButtons from './NavButtons';
+
 import { useState } from "react";
+import { useMediaQuery } from 'react-responsive';
 
 import ProjectsContent from './ProjectsContent';
 import AboutContent from './AboutContent';
@@ -25,6 +29,7 @@ const Desktop = () => {
 		{ id: "contact-icon", title: "Contact", position: { x: 50, y: 300 }, iconImg: contact},
 	]);
 
+	const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
 	const bringWindowToFront = (id) => {
 		const idModified = id.replace("-icon", "-window");
@@ -77,6 +82,7 @@ const Desktop = () => {
 		onDragOver={handleDragOver}
 		onDrop={handleDrop}
 		>
+			<Header />
 			{windows.map((win) => (
 				<Window
 					key={win.id}
@@ -97,6 +103,7 @@ const Desktop = () => {
 						bringWindowToFront={bringWindowToFront}
 					/>
 				))}
+			{isMobile ? <NavButtons /> : isMobile}
 		</div>
 	)
 }

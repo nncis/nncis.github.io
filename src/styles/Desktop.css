@@ -1,13 +1,12 @@
 .desktop {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     width: 98vw;
-    height: 96vh;
+    height: 97vh;
     border: 3px solid black;
     border-radius: 10px;
     background-color: var(--indigo);
     position: relative;
     overflow: hidden;
 }
-
