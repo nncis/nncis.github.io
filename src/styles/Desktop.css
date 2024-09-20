@@ -10,3 +10,9 @@
     position: relative;
     overflow: hidden;
 }
+
+@media (max-width: 600px) {
+.desktop {
+    height: 94vh;    
+}
+}

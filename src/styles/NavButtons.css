@@ -4,13 +4,14 @@
     align-items: center;
     background-color: var(--dark-indigo);
     border-top: 2px solid black;
-    height: 4rem;
+    height: 5rem;
     width: 100%;
     z-index: 1000;
 }
 
 .home-btn, .back-btn {
-    width: 2rem;
-    height: 2rem;
+    width: 3rem;
+    height: 3rem;
     filter: invert(100%);
+    cursor: pointer;
 }

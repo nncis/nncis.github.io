@@ -70,6 +70,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  background-color: var(--lightCyan);
 }
 
 h1 {

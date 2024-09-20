@@ -76,6 +76,14 @@ const Desktop = () => {
     );
   };
 
+	const backButton = () => {
+		setWindows((prevWindows) => 
+			prevWindows.map((win) =>
+				win.display === true ? {...win, display: false} : win
+			)
+		)
+	}
+
 	return (
 		<div 
 		className="desktop" 
@@ -103,7 +111,7 @@ const Desktop = () => {
 						bringWindowToFront={bringWindowToFront}
 					/>
 				))}
-			{isMobile ? <NavButtons /> : isMobile}
+			{isMobile ? <NavButtons backButton={backButton} /> : isMobile}
 		</div>
 	)
 }
