@@ -85,32 +85,33 @@ const Desktop = () => {
 	}
 
 	return (
-		<div 
-		className="desktop" 
-		onDragOver={handleDragOver}
-		onDrop={handleDrop}
-		>
+		<div className="desktop">
 			<Header />
-			{windows.map((win) => (
-				<Window
-					key={win.id}
-					id={win.id}
-					title={win.title}
-					bringWindowToFront={bringWindowToFront}
-					display={win.display}
-					closeWindow={closeWindow}
-					Content={win.content}
-				/>
-			))}
-				{icons.map((icon) => (
-					<Icon
-						key={icon.id}
-						icon={icon}
-						iconImg={icon.iconImg}
-						openWindow={openWindow}
+				<div className='draggable-area'
+					onDragOver={handleDragOver}
+					onDrop={handleDrop}
+				>
+				{windows.map((win) => (
+					<Window
+						key={win.id}
+						id={win.id}
+						title={win.title}
 						bringWindowToFront={bringWindowToFront}
-					/>
-				))}
+						display={win.display}
+						closeWindow={closeWindow}
+						Content={win.content}
+						/>
+					))}
+					{icons.map((icon) => (
+						<Icon
+							key={icon.id}
+							icon={icon}
+							iconImg={icon.iconImg}
+							openWindow={openWindow}
+							bringWindowToFront={bringWindowToFront}
+						/>
+					))}
+			</div>	
 			{isMobile ? <NavButtons backButton={backButton} /> : isMobile}
 		</div>
 	)

@@ -5,7 +5,7 @@
     height: 4rem;
     color: var(--wheat);
     background-color: var(--dark-indigo);
-    position: static;
+    position: relative;
     z-index: 1000;
     border-bottom: 2px solid black;
 }

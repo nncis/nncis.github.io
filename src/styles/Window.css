@@ -3,8 +3,7 @@
     flex-direction: column;
     background-color: var(--wheat);
     border: 3px solid black;
-
-    position: absolute;
+    position: relative;
     overflow: hidden;
     z-index: 100;
 }
@@ -60,9 +59,9 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--golden);  /* Color del pulgar */
+    background-color: var(--golden);
     border-radius: 8px;
-    border: 3px solid var(--dark-indigo);  /* Espacio alrededor del pulgar */
+    border: 3px solid var(--dark-indigo);
     box-shadow: inset 0px -15px 2px -13px var(--dark-indigo);
   }
 
@@ -73,9 +72,17 @@
  
 @media (max-width: 600px) {
 
-	.window-btns {
+	/* .window-btns {
 		display: none;
-	}
+	} */
+
+    .window-container {
+        border: none;
+    }
+
+    .window-header {
+        display: none;
+    }
 
 	::-webkit-scrollbar {
     width: 1.5rem;

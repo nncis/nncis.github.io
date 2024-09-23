@@ -11,8 +11,13 @@
     overflow: hidden;
 }
 
-@media (max-width: 600px) {
-.desktop {
-    height: 94vh;    
+.draggable-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
+
+@media (max-width: 600px) {
+    
 }

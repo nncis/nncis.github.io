@@ -25,11 +25,12 @@ const Window = ({ id, title, bringWindowToFront, closeWindow, display, Content }
 
 	const expandWindow = () => {
 		if(!isExpand){
-			setWindowSize({ width: '100%', height: '98%' })
-			setPosition({ x: 0, y: 38})
+			setWindowSize({ width: '100%', height: '100%' })
+			setPosition({ x: 0, y: 0})
 			setIsExpand(!isExpand)
 		} else {
 			setWindowSize({ width: '90rem', height: '70rem' })
+			setPosition({x: 50, y: 50})
 			setIsExpand(!isExpand)
 		}
 		
@@ -45,13 +46,13 @@ const Window = ({ id, title, bringWindowToFront, closeWindow, display, Content }
 			position={isMobile ? {x: 0, y: 0} : position} 
 			onDrag={handleDrag}
 			handle='.window-header'
-			bounds={{ top: 38 }}
+			bounds=".draggable-area"
 			>
 			<div className='window-container' 
 				style={{ 
 					display: `${display ? "flex" : "none"}`,
 					width: `${isMobile ? '100%' : windowSize.width}`,
-					height: `${isMobile ? '97%' : windowSize.height}`,
+					height: `${isMobile ? '100%' : windowSize.height}`,
 					}}>
 				<div id={id} className='window-header'>
 					<h4 onMouseDown={setBringWindowToFront}>{title}</h4>
