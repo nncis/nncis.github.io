@@ -15,8 +15,8 @@ const ProjectsContent = () => {
 
 	return (
 		<>
-		<div className="project-section-header">
-			<h2 className="project-section-title">Some of my freecodecamp projects</h2>
+		<div className="section-header">
+			<h2 className="section-title">Some of my freecodecamp projects</h2>
 		</div>
 		<div className="projects-grid">
 			{content.map(content => (
