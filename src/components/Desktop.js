@@ -10,10 +10,12 @@ import { useMediaQuery } from 'react-responsive';
 import ProjectsContent from './ProjectsContent';
 import AboutContent from './AboutContent';
 import ContactContent from './ContactContent';
+import SkillsContent from './SkillsContent';
 
 import floppy from '../assets/floppy-disk.png'
 import contact from '../assets/chat.png'
 import about from '../assets/contact.png'
+import skills from '../assets/website.png'
 
 const Desktop = () => {
 
@@ -21,12 +23,14 @@ const Desktop = () => {
 		{ id: "project-window", title: "Projects", display: false, content: ProjectsContent },
 		{ id: "about-window", title: "About", display: false, content: AboutContent },
 		{ id: "contact-window", title: "Contact", display: false, content: ContactContent },
+		{ id: "skills-window", title: "Skills", display: false, content: SkillsContent },
 	]);
 
 	const [icons, setIcons] = useState([
 		{ id: "project-icon", title: "Projects", position: { x: 50, y: 100 }, iconImg: floppy},
 		{ id: "about-icon", title: "About", position: { x: 50, y: 200 }, iconImg: about},
 		{ id: "contact-icon", title: "Contact", position: { x: 50, y: 300 }, iconImg: contact},
+		{ id: "skills-icon", title: "Skills", position: { x: 50, y: 400 }, iconImg: skills},
 	]);
 
 	const isMobile = useMediaQuery({ query: '(max-width: 600px)' });

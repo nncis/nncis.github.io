@@ -3,7 +3,7 @@
     flex-direction: column;
     background-color: var(--wheat);
     border: 3px solid black;
-    position: relative;
+    position: absolute;
     overflow: hidden;
     z-index: 100;
 }

@@ -9,7 +9,7 @@ import { useMediaQuery } from 'react-responsive';
 
 const Window = ({ id, title, bringWindowToFront, closeWindow, display, Content }) => {
 
-	const [position, setPosition] = useState({ x: 20, y: 50});
+	const [position, setPosition] = useState({ x: 20, y: 20});
 	const [windowSize, setWindowSize] = useState({width: '90rem', height: '70rem'});
 	const [isExpand, setIsExpand] = useState(false);
 	
